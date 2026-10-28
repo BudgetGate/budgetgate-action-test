@@ -1,0 +1,23 @@
+{
+  "snapshots": [
+    {
+      "schema_version": "2.0",
+      "network": "testnet",
+      "generated_at": "2026-10-28T13:18:00Z",
+      "commit_sha": "cedf1c2011ae5bf7b17f8b1a18c709aeeaf1f116",
+      "functions": [
+        {
+          "name": "bump",
+          "fixture_id": "counter_bump",
+          "cpu_instructions": 291573,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 80,
+          "read_entries": 3,
+          "write_entries": 1,
+          "pct_of_network_cap": 0.75
+        }
+      ]
+    }
+  ]
+}
