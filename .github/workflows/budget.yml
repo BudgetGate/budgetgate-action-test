@@ -22,3 +22,5 @@ jobs:
           fixture-path: budget/fixture.json
           binary-version: 0.2.0
           history-branch: budgetgate-history
+          # Nothing listens here: core cannot read the network caps and exits 2.
+          rpc-url: http://127.0.0.1:9
