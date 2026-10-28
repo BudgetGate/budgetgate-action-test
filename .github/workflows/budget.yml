@@ -16,9 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # The branch under test (soroban-budget-action#24); switch to the release tag once the Action is released.
-      - uses: BudgetGate/soroban-budget-action@feat/snapshot-history
+      # The Action's main (#24 merged); switch to the release tag once the Action is released.
+      - uses: BudgetGate/soroban-budget-action@main
         with:
           fixture-path: budget/fixture.json
           binary-version: 0.2.0
           history-branch: budgetgate-history
+          # Nothing listens here: core cannot read the network caps and exits 2.
+          rpc-url: http://127.0.0.1:9
