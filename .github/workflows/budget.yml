@@ -1,0 +1,24 @@
+name: Budget Gate
+
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  budget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # The branch under test (soroban-budget-action#24); switch to the release tag once the Action is released.
+      - uses: BudgetGate/soroban-budget-action@feat/snapshot-history
+        with:
+          fixture-path: budget/fixture.json
+          binary-version: 0.2.0
+          history-branch: budgetgate-history
