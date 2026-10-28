@@ -16,8 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # The Action's main (#24 merged); switch to the release tag once the Action is released.
-      - uses: BudgetGate/soroban-budget-action@main
+      # The Action's first release.
+      - uses: BudgetGate/soroban-budget-action@v0.2.0
         with:
           fixture-path: budget/fixture.json
           binary-version: 0.2.0
