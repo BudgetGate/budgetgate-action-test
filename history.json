@@ -326,6 +326,58 @@
           "pct_of_network_cap": 1.25
         }
       ]
+    },
+    {
+      "schema_version": "2.0",
+      "network": "testnet",
+      "generated_at": "2026-10-29T22:55:43Z",
+      "commit_sha": "6fe7c67cdc41c3b89732e60b4f3ac65ef1eff6a4",
+      "functions": [
+        {
+          "name": "bump",
+          "fixture_id": "bump",
+          "cpu_instructions": 291573,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 80,
+          "read_entries": 3,
+          "write_entries": 1,
+          "pct_of_network_cap": 0.75
+        },
+        {
+          "name": "deposit",
+          "fixture_id": "deposit",
+          "cpu_instructions": 411511,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 148,
+          "read_entries": 3,
+          "write_entries": 1,
+          "pct_of_network_cap": 0.75
+        },
+        {
+          "name": "deposit_alice",
+          "fixture_id": "deposit_alice",
+          "cpu_instructions": 1258736,
+          "memory_bytes": null,
+          "read_bytes": 144,
+          "write_bytes": 224,
+          "read_entries": 5,
+          "write_entries": 2,
+          "pct_of_network_cap": 1.25
+        },
+        {
+          "name": "relay",
+          "fixture_id": "relay",
+          "cpu_instructions": 559224,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 80,
+          "read_entries": 5,
+          "write_entries": 1,
+          "pct_of_network_cap": 1.25
+        }
+      ]
     }
   ]
 }
