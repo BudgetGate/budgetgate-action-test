@@ -13,12 +13,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        runner: [ ubuntu-latest, ubuntu-24.04-arm, macos-latest, windows-latest ]
+        runner: [ ubuntu-latest, ubuntu-24.04-arm, macos-26-intel, macos-latest, windows-latest, windows-11-arm ]
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v7
-      # soroban-budget-action's feat/more-runner-platforms (A23), pinned by commit.
-      - uses: BudgetGate/soroban-budget-action@243aa87ab1d79a75956393484c0c639b495a2408
+      # soroban-budget-action's main after A23 (#40), pinned by commit.
+      - uses: BudgetGate/soroban-budget-action@b842a4ee1a7b3b90ee100900f24c0b23bad5c2a1
         with:
           fixture-path: budget/fixture.json
-          binary-version: 0.2.1
+          binary-version: 0.2.2
