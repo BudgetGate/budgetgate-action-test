@@ -16,10 +16,22 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # Reuse downloaded crates and compiled dependencies. A fresh checkout makes the contracts'
+      # own sources newer than the cache, so cargo rebuilds them every run.
+      - uses: actions/cache@v6
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: contracts-${{ runner.os }}-${{ hashFiles('rust-toolchain.toml', 'Cargo.lock') }}
+
       # Measure this commit's contract code: build it, deploy it to testnet with a throwaway
       # friendbot-funded key, and write budget/fixture.json against that deployment.
       - uses: stellar/stellar-cli@v28.1.0
       - run: budget/build-fixture.sh
+      # Shows that a cached build compiles the same wasm as a clean one.
+      - run: sha256sum target/wasm32v1-none/release/*.wasm
 
       # The Action's v0.2.2 release.
       - uses: BudgetGate/soroban-budget-action@v0.2.2
