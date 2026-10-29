@@ -16,6 +16,11 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
+      # Measure this commit's contract code: build it, deploy it to testnet with a throwaway
+      # friendbot-funded key, and write budget/fixture.json against that deployment.
+      - uses: stellar/stellar-cli@v28.1.0
+      - run: budget/build-fixture.sh
+
       # The Action's v0.2.2 release.
       - uses: BudgetGate/soroban-budget-action@v0.2.2
         with:
