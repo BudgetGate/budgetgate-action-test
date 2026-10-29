@@ -113,6 +113,25 @@
           "pct_of_network_cap": 0.75
         }
       ]
+    },
+    {
+      "schema_version": "2.0",
+      "network": "testnet",
+      "generated_at": "2026-10-29T13:15:43Z",
+      "commit_sha": "26ee457529125ea0a58ec4c390352cb33614df9f",
+      "functions": [
+        {
+          "name": "bump",
+          "fixture_id": "counter_bump",
+          "cpu_instructions": 291573,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 80,
+          "read_entries": 3,
+          "write_entries": 1,
+          "pct_of_network_cap": 0.75
+        }
+      ]
     }
   ]
 }
