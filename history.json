@@ -151,6 +151,47 @@
           "pct_of_network_cap": 0.75
         }
       ]
+    },
+    {
+      "schema_version": "2.0",
+      "network": "testnet",
+      "generated_at": "2026-10-29T18:50:20Z",
+      "commit_sha": "33f3bdd591e57972b1d4fba4bdcdab3453fbf25c",
+      "functions": [
+        {
+          "name": "bump",
+          "fixture_id": "bump",
+          "cpu_instructions": 291573,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 80,
+          "read_entries": 3,
+          "write_entries": 1,
+          "pct_of_network_cap": 0.75
+        },
+        {
+          "name": "deposit",
+          "fixture_id": "deposit",
+          "cpu_instructions": 411511,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 148,
+          "read_entries": 3,
+          "write_entries": 1,
+          "pct_of_network_cap": 0.75
+        },
+        {
+          "name": "relay",
+          "fixture_id": "relay",
+          "cpu_instructions": 559224,
+          "memory_bytes": null,
+          "read_bytes": 0,
+          "write_bytes": 80,
+          "read_entries": 5,
+          "write_entries": 1,
+          "pct_of_network_cap": 1.25
+        }
+      ]
     }
   ]
 }
