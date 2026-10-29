@@ -1,0 +1,5 @@
+# Pinned so the baseline and every pull request build the contract with the same compiler:
+# a different Rust version compiles different wasm, which changes the measured cost.
+[toolchain]
+channel = "1.97.1"
+targets = ["wasm32v1-none"]
