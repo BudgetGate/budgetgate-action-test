@@ -16,9 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # main after the A21 dependency upgrade (soroban-budget-action #32), pinned by commit.
-      - uses: BudgetGate/soroban-budget-action@909e535a1d508a34017f012b36d74e08cdc9bf48
+      # main after A22 (soroban-budget-action #34), pinned by commit until the Action's v0.2.1 release.
+      - uses: BudgetGate/soroban-budget-action@aaba24a8f78968c950267a602400722b0526febe
         with:
           fixture-path: budget/fixture.json
-          binary-version: 0.2.0
+          binary-version: 0.2.1
           history-branch: budgetgate-history
