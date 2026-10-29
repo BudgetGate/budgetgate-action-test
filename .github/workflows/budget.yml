@@ -16,8 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # main after A22 (soroban-budget-action #34), pinned by commit until the Action's v0.2.1 release.
-      - uses: BudgetGate/soroban-budget-action@aaba24a8f78968c950267a602400722b0526febe
+      # The Action's v0.2.1 release.
+      - uses: BudgetGate/soroban-budget-action@v0.2.1
         with:
           fixture-path: budget/fixture.json
           binary-version: 0.2.1
