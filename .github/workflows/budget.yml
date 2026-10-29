@@ -30,6 +30,10 @@ jobs:
       # friendbot-funded key, and write budget/fixture.json against that deployment.
       - uses: stellar/stellar-cli@v28.1.0
       - run: budget/build-fixture.sh
+        env:
+          # Optional: a funded testnet account's secret key, so runs do not need friendbot.
+          # Empty when the repository has no such secret; the script then uses friendbot.
+          BUDGET_GATE_SECRET_KEY: ${{ secrets.BUDGET_GATE_SECRET_KEY }}
       # Shows that a cached build compiles the same wasm as a clean one.
       - run: sha256sum target/wasm32v1-none/release/*.wasm
 
