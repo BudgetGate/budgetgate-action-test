@@ -1,0 +1,97 @@
+name: Platforms
+
+# Runs budget/build-fixture.sh and core on every runner type the stellar CLI supports, then core
+# on Windows arm64 (no stellar CLI build there) against the fixture written on Linux, and checks
+# that every runner measured the same costs. Runs on a pull request that changes this file, and on
+# demand. It posts nothing and saves no baseline.
+on:
+  pull_request:
+    paths: [ .github/workflows/platforms.yml ]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  CORE_VERSION: v0.2.3
+
+jobs:
+  script:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { runner: ubuntu-latest, asset: budget-core-linux-amd64 }
+          - { runner: ubuntu-24.04-arm, asset: budget-core-linux-arm64 }
+          - { runner: macos-26-intel, asset: budget-core-darwin-amd64 }
+          - { runner: macos-latest, asset: budget-core-darwin-arm64 }
+          - { runner: windows-latest, asset: budget-core-windows-amd64.exe }
+    runs-on: ${{ matrix.runner }}
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@v7
+      - uses: stellar/stellar-cli@v28.1.0
+      - run: echo "$BASH_VERSION"
+      - run: budget/build-fixture.sh
+      - name: Measure with core
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release download "$CORE_VERSION" -R BudgetGate/soroban-budget-core -p '${{ matrix.asset }}' -p SHA256SUMS
+          grep " ${{ matrix.asset }}\$" SHA256SUMS | cut -d' ' -f1 > want.txt
+          if command -v sha256sum >/dev/null; then sha256sum '${{ matrix.asset }}'; else shasum -a 256 '${{ matrix.asset }}'; fi | cut -d' ' -f1 > got.txt
+          diff want.txt got.txt
+          chmod +x '${{ matrix.asset }}'
+          echo '{"schema_version":"2.0","functions":[]}' > empty.json
+          ./'${{ matrix.asset }}' --baseline empty.json --fixture budget/fixture.json --output-json snapshot.json | grep CPUInstructions
+      - uses: actions/upload-artifact@v7
+        with:
+          name: snapshot-${{ matrix.asset }}
+          path: snapshot.json
+      - if: matrix.runner == 'ubuntu-latest'
+        uses: actions/upload-artifact@v7
+        with:
+          name: fixture
+          path: budget/fixture.json
+
+  windows-arm64:
+    needs: script
+    runs-on: windows-11-arm
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          name: fixture
+      - name: Measure with core
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ASSET: budget-core-windows-arm64.exe
+        run: |
+          gh release download "$CORE_VERSION" -R BudgetGate/soroban-budget-core -p "$ASSET" -p SHA256SUMS
+          sha256sum -c --ignore-missing SHA256SUMS
+          echo '{"schema_version":"2.0","functions":[]}' > empty.json
+          ./"$ASSET" --baseline empty.json --fixture fixture.json --output-json snapshot.json | grep CPUInstructions
+      - uses: actions/upload-artifact@v7
+        with:
+          name: snapshot-budget-core-windows-arm64.exe
+          path: snapshot.json
+
+  compare:
+    needs: [script, windows-arm64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v8
+        with:
+          pattern: snapshot-*
+      - name: Every runner measured the same costs
+        run: |
+          for d in snapshot-*; do
+            jq -c '[.functions[] | {name, cpu_instructions, read_bytes, write_bytes, read_entries, write_entries}]' "$d/snapshot.json" > "$d.costs"
+            echo "$d: $(cat "$d.costs")"
+          done
+          test "$(ls snapshot-*.costs | wc -l)" -eq 6
+          test "$(cat snapshot-*.costs | sort -u | wc -l)" -eq 1
