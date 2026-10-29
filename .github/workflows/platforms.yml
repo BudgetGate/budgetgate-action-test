@@ -17,8 +17,8 @@ jobs:
     runs-on: ${{ matrix.runner }}
     steps:
       - uses: actions/checkout@v7
-      # soroban-budget-action's fix/windows-baseline-cache (A24), pinned by commit.
-      - uses: BudgetGate/soroban-budget-action@7fe7e6e26c167e96d719ee4ddfbf297362f760ed
+      # soroban-budget-action's v0.2.2 release.
+      - uses: BudgetGate/soroban-budget-action@v0.2.2
         with:
           fixture-path: budget/fixture.json
           binary-version: 0.2.2
