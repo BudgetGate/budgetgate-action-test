@@ -19,7 +19,6 @@ jobs:
       # Measure this commit's contract code: build it, deploy it to testnet with a throwaway
       # friendbot-funded key, and write budget/fixture.json against that deployment.
       - uses: stellar/stellar-cli@v28.1.0
-      - run: rustup target add wasm32v1-none
       - run: budget/build-fixture.sh
 
       # The Action's v0.2.2 release.
