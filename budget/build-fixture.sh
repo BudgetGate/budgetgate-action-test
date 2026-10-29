@@ -16,6 +16,7 @@ CONTRACTS=(
   "counter target/wasm32v1-none/release/counter.wasm"
   "vault target/wasm32v1-none/release/vault.wasm --admin {ADDRESS} --limit 1000"
   "relay target/wasm32v1-none/release/relay.wasm --counter {counter}"
+  "greeter target/wasm32v1-none/release/greeter.wasm"
 )
 # One call per line: the name it is reported under (unique; the baseline is matched by it), the
 # contract's name from CONTRACTS, the function, then its arguments as for `stellar contract invoke`.
@@ -24,6 +25,8 @@ CALLS=(
   "deposit vault deposit --from {ADDRESS} --amount 10"
   "deposit_alice vault deposit --from {alice} --amount 10"
   "relay relay relay"
+  "greet greeter hello --to 'Budget Gate'"
+  "total greeter total --values '[1, 2, 3]'"
 )
 # Extra accounts, one name per line, for calls that need authorization from an account other
 # than the transaction's source. Each gets a throwaway key funded by friendbot. The account must
@@ -33,7 +36,9 @@ ACCOUNTS=(
   "alice"
 )
 # In all three lists, {ADDRESS} is replaced with the funded key's address, {name} with the
-# address of the account or the ID of the contract with that name. Arguments are split on spaces.
+# address of the account or the ID of the contract with that name. Lines are split into words as
+# a shell would, without running anything: quote an argument that contains spaces, such as text
+# or JSON ('Budget Gate', '[1, 2, 3]').
 OUT=budget/fixture.json
 
 network=testnet
@@ -60,6 +65,17 @@ fill() {
     text="${text//\{${names[$i]}\}/${ids[$i]}}"
   done
   printf '%s' "$text"
+}
+
+# Splits $1 into the array `words`, honouring '...' and "..." quotes (xargs parses them; nothing
+# is run). An unmatched quote stops the script.
+split_words() {
+  local list word
+  list="$(printf '%s' "$1" | xargs printf '%s\n')" || { echo "Cannot split into words: $1" >&2; return 1; }
+  words=()
+  while IFS= read -r word; do
+    words+=("$word")
+  done <<< "$list"
 }
 
 id_of() {
@@ -128,7 +144,7 @@ done
 stellar contract build
 
 for i in "${!CONTRACTS[@]}"; do
-  read -r -a words <<< "$(fill "${CONTRACTS[$i]}")"
+  split_words "$(fill "${CONTRACTS[$i]}")"
   read -r salt id <<< "$(salt_for_slice "$i" "${#CONTRACTS[@]}")"
   deploy "${words[1]}" "$salt" "$id" "${words[@]:2}"
   names+=("${words[0]}")
@@ -143,7 +159,7 @@ done
 entries=()
 reported=" "
 for call in "${CALLS[@]}"; do
-  read -r -a words <<< "$(fill "$call")"
+  split_words "$(fill "$call")"
   name="${words[0]}"
   case "$reported" in
     *" $name "*) echo "Two calls in CALLS are named '$name'; give each a unique name." >&2; exit 1 ;;
