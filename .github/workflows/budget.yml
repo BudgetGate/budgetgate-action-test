@@ -16,9 +16,9 @@ jobs:
     steps:
       - uses: actions/checkout@v7
 
-      # The Action's v0.2.1 release.
-      - uses: BudgetGate/soroban-budget-action@v0.2.1
+      # The Action's v0.2.2 release.
+      - uses: BudgetGate/soroban-budget-action@v0.2.2
         with:
           fixture-path: budget/fixture.json
-          binary-version: 0.2.1
+          binary-version: 0.2.2
           history-branch: budgetgate-history
