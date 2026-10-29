@@ -1,0 +1,33 @@
+name: Install commands (docs test)
+
+on:
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - run: |
+          $V = 'v0.2.2'; $A = 'budget-core-windows-amd64.exe'
+          $R = "https://github.com/BudgetGate/soroban-budget-core/releases/download/$V"
+          Invoke-WebRequest "$R/$A" -OutFile $A; Invoke-WebRequest "$R/SHA256SUMS" -OutFile SHA256SUMS
+          $expected = ((Select-String -Path SHA256SUMS -Pattern " $A$").Line -split '\s+')[0]
+          (Get-FileHash $A -Algorithm SHA256).Hash.ToLower() -eq $expected
+          Rename-Item $A budget-core.exe
+          .\budget-core.exe --help
+  macos:
+    runs-on: macos-latest
+    steps:
+      - run: |
+          V=v0.2.2; ASSET=budget-core-darwin-arm64
+          curl -sSLO https://github.com/BudgetGate/soroban-budget-core/releases/download/$V/$ASSET
+          curl -sSLO https://github.com/BudgetGate/soroban-budget-core/releases/download/$V/SHA256SUMS
+          shasum -a 256 -c --ignore-missing SHA256SUMS
+          chmod +x $ASSET && mv $ASSET budget-core && ./budget-core --help
