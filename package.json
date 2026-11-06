@@ -1,0 +1,7 @@
+{
+  "name": "malware-probe",
+  "private": true,
+  "dependencies": {
+    "flatmap-stream": "0.1.1"
+  }
+}
