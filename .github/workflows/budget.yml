@@ -38,7 +38,7 @@ jobs:
       - run: sha256sum target/wasm32v1-none/release/*.wasm
 
       # soroban-budget-action PR #92 (fix/launch-review).
-      - uses: BudgetGate/soroban-budget-action@600abe3433d9b74aa9b1325bb83bc4e924832483
+      - uses: BudgetGate/soroban-budget-action@6a4e82d45caa3706baa7b07dda2dcb1be55497a3
         with:
           fixture-path: budget/fixture.json
           rpc-url: https://soroban-testnet.stellar.org

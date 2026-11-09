@@ -4,6 +4,7 @@ name: Platforms
 # on Windows arm64 (no stellar CLI build there) against the fixture written on Linux, and checks
 # that every runner measured the same costs. Runs on a pull request that changes this file, and on
 # demand. It posts nothing and saves no baseline.
+# Run for soroban-budget-action PR #94 (fixture entries built with jq).
 on:
   pull_request:
     paths: [ .github/workflows/platforms.yml ]

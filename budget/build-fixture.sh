@@ -202,7 +202,7 @@ for call in "${CALLS[@]}"; do
   reported+="$name "
   id="$(id_of "${words[1]}")"
   xdr="$(retry stellar contract invoke --id "$id" --source "$key" --network "$network" --build-only -- "${words[@]:2}")"
-  entries+=("{\"name\":\"$name\",\"fixture_id\":\"$name\",\"xdr\":\"$xdr\"}")
+  entries+=("$(jq -cn --arg name "$name" --arg xdr "$xdr" '{name: $name, fixture_id: $name, xdr: $xdr}')")
 done
 
 mkdir -p "$(dirname "$OUT")"
