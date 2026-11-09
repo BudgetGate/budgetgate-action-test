@@ -37,9 +37,10 @@ jobs:
       # Shows that a cached build compiles the same wasm as a clean one.
       - run: sha256sum target/wasm32v1-none/release/*.wasm
 
-      # The Action's v0.2.2 release.
-      - uses: BudgetGate/soroban-budget-action@v0.2.2
+      # soroban-budget-action PR #92 (fix/launch-review).
+      - uses: BudgetGate/soroban-budget-action@600abe3433d9b74aa9b1325bb83bc4e924832483
         with:
           fixture-path: budget/fixture.json
+          rpc-url: https://soroban-testnet.stellar.org
           binary-version: 0.2.5
           history-branch: budgetgate-history
